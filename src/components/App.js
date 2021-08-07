@@ -3,10 +3,27 @@ import React, { useState } from "react";
 import Filters from "./Filters";
 import PetBrowser from "./PetBrowser";
 
+const API_URL = 'http://localhost:3001/pets'
+
 function App() {
   const [pets, setPets] = useState([]);
   const [filters, setFilters] = useState({ type: "all" });
 
+  const  onFindPetsClick =  async () => {
+    let querystring = '';
+    if(filters.type !== 'all') {
+      querystring = `?type=${filters.type}`;
+    }
+    try {
+      const res = await fetch(`${API_URL}${querystring}`);
+      const data = await res.json();
+      setPets(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  console.log(pets);
   return (
     <div className="ui container">
       <header>
@@ -15,7 +32,7 @@ function App() {
       <div className="ui container">
         <div className="ui grid">
           <div className="four wide column">
-            <Filters />
+            <Filters onChangeType={setFilters} onFindPetsClick={onFindPetsClick} />
           </div>
           <div className="twelve wide column">
             <PetBrowser />
