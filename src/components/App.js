@@ -23,6 +23,20 @@ function App() {
     }
   }
 
+  const onAdoptPet = (id) => {
+    setPets(prevPets => {
+      return prevPets.map(pet => {
+        if (pet.id === id) {
+          return {
+            ...pet,
+            isAdopted: true,
+          };
+        }
+        return pet;
+      })
+    })
+  }
+
   console.log(pets);
   return (
     <div className="ui container">
@@ -35,7 +49,7 @@ function App() {
             <Filters onChangeType={setFilters} onFindPetsClick={onFindPetsClick} />
           </div>
           <div className="twelve wide column">
-            <PetBrowser />
+            <PetBrowser pets={pets} onAdoptPet={onAdoptPet} />
           </div>
         </div>
       </div>
